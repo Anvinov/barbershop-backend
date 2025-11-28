@@ -8,13 +8,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/clients")
+@RequestMapping("/api/client")
 public class ClientController {
 
     private final ClientService service;
 
     public ClientController(ClientService service) {
         this.service = service;
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity<?> getHealth() {
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping

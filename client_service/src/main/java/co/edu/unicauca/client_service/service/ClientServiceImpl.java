@@ -29,7 +29,7 @@ public class ClientServiceImpl implements ClientService {
         Client client = ClientMapper.toEntity(request);
         client.setAvailable(true);
 
-        client = repository.save(client);
+        repository.save(client);
 
         return ClientMapper.toResponse(client);
     }
@@ -58,7 +58,7 @@ public class ClientServiceImpl implements ClientService {
         client.setName(request.getName());
         client.setPhone(request.getPhone());
 
-        client = repository.save(client);
+        repository.save(client);
 
         return ClientMapper.toResponse(client);
     }
@@ -74,7 +74,7 @@ public class ClientServiceImpl implements ClientService {
 
         client.setAvailable(false);
 
-        client = repository.save(client);
+        repository.save(client);
 
         return ClientMapper.toResponse(client);
     }
