@@ -1,6 +1,7 @@
 package co.edu.unicauca.barber_service.controller;
 
 import co.edu.unicauca.barber_service.infra.dto.request.BarberRequestDTO;
+import co.edu.unicauca.barber_service.infra.dto.request.BarberSimpleRequestDTO;
 import co.edu.unicauca.barber_service.infra.dto.request.ScheduleRequestDTO;
 import co.edu.unicauca.barber_service.infra.dto.request.TimeSlotRequestDTO;
 import co.edu.unicauca.barber_service.infra.dto.response.BarberResponseDTO;
@@ -40,15 +41,21 @@ public class BarberController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    public ResponseEntity<?> getByEmail(@PathVariable Long id) {
         BarberResponseDTO barber = barberService.getBarberById(id);
+        return ResponseEntity.ok(barber);
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity<?> getByEmail(@RequestParam String email) {
+        BarberResponseDTO barber = barberService.getBarberByEmail(email);
         return ResponseEntity.ok(barber);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<?> update(
             @PathVariable Long id,
-            @RequestBody BarberRequestDTO request) {
+            @RequestBody BarberSimpleRequestDTO request) {
         BarberResponseDTO barber = barberService.updateBarber(id, request);
         return ResponseEntity.ok(barber);
     }
@@ -93,8 +100,8 @@ public class BarberController {
 
     @DeleteMapping("schedule/slot/{id}")
     public ResponseEntity<?> deleteTimeSlot(@PathVariable Long id){
-        TimeSlotResponseDTO timeSlot = scheduleService.DeleteTimeSlot(id);
-        return ResponseEntity.ok(timeSlot);
+        scheduleService.DeleteTimeSlot(id);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
 }

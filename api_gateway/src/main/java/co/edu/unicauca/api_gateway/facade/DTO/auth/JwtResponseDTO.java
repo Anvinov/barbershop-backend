@@ -1,4 +1,4 @@
-package co.edu.unicauca.api_gateway.facade.DTO.gateway;
+package co.edu.unicauca.api_gateway.facade.DTO.auth;
 
 import lombok.Getter;
 import lombok.Setter;

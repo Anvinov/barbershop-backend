@@ -106,7 +106,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
     @Override
-    public TimeSlotResponseDTO DeleteTimeSlot(Long id) {
+    public void DeleteTimeSlot(Long id) {
         TimeSlot timeSlot = timeSlotRepository.findById(id)
                 .orElseThrow(() -> new TimeSlotNotFoundException(id));
 
@@ -116,7 +116,5 @@ public class ScheduleServiceImpl implements ScheduleService {
         schedule.removeSlot(timeSlot);
 
         scheduleRepository.save(schedule);
-
-        return TimeSlotMapper.toResponse(timeSlot);
     }
 }

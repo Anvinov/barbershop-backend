@@ -17,5 +17,5 @@ public interface ScheduleService {
 
     TimeSlotResponseDTO AddTimeSlot(Long barberId, TimeSlotRequestDTO request);
 
-    TimeSlotResponseDTO DeleteTimeSlot(Long id);
+    void DeleteTimeSlot(Long id);
 }

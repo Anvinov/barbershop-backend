@@ -1,21 +1,86 @@
 package co.edu.unicauca.api_gateway.controller;
 
+import co.edu.unicauca.api_gateway.facade.DTO.barber.ScheduleRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.barber.TimeSlotRequestDTO;
+import co.edu.unicauca.api_gateway.facade.client.BarberClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/barber")
 public class BarberController {
 
+    private final BarberClient  barberClient;
+
+    public BarberController(BarberClient barberClient) {
+        this.barberClient = barberClient;
+    }
+
     @GetMapping("/health")
     public ResponseEntity<?> getHealth() {
         return ResponseEntity.ok().build();
     }
 
+    // Barber endpoints
+    @GetMapping("/{id}")
+    @PreAuthorize("hasRole('BARBER')")
+    public ResponseEntity<?> getById(@PathVariable Long id) {
+        return barberClient.getById(id);
+    }
+
+    @GetMapping("/email")
+    @PreAuthorize("hasRole('BARBER')")
+    public ResponseEntity<?> getByEmail(@RequestParam String email) {
+        return barberClient.getByEmail(email);
+    }
+
+    @PutMapping("/disable/{id}")
+    @PreAuthorize("hasRole('BARBER')")
+    public ResponseEntity<?> disableClient(@PathVariable Long id) {
+        return barberClient.disableClient(id);
+    }
+
+    // Schedule endpoints
+    @GetMapping("/schedule/{barberId}")
+    @PreAuthorize("hasRole('BARBER')")
+    public ResponseEntity<?> getSchedule(@PathVariable Long barberId) {
+        return barberClient.getSchedule(barberId);
+    }
+
+    @PutMapping("/schedule/{barberId}")
+    @PreAuthorize("hasRole('BARBER')")
+    public ResponseEntity<?> updateSchedule(
+            @PathVariable Long barberId,
+            @RequestBody ScheduleRequestDTO request) {
+        return barberClient.updateSchedule(barberId, request);
+    }
+
+    // Time slots endpoints
+    @GetMapping("/schedule/slot/{barberId}")
+    @PreAuthorize("hasRole('BARBER')")
+    public ResponseEntity<?> getScheduleByBarberId(
+            @PathVariable Long barberId,
+            @RequestParam LocalDate day) {
+        return barberClient.getScheduleByBarberId(barberId, day);
+    }
+
+    @PostMapping("/schedule/slot/{barberId}")
+    @PreAuthorize("hasRole('BARBER')")
+    public ResponseEntity<?> addTimeSlot(
+            @PathVariable Long barberId,
+            @RequestBody TimeSlotRequestDTO request) {
+        return barberClient.addTimeSlot(barberId, request);
+    }
+
+    @DeleteMapping("schedule/slot/{id}")
+    @PreAuthorize("hasRole('BARBER')")
+    public ResponseEntity<?> deleteTimeSlot(@PathVariable Long id){
+        return barberClient.deleteTimeSlot(id);
+    }
 
 
 

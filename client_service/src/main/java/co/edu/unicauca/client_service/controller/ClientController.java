@@ -29,8 +29,14 @@ public class ClientController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
+    public ResponseEntity<?> getByEmail(@PathVariable Long id) {
         ClientResponseDTO client = service.getClientById(id);
+        return ResponseEntity.ok(client);
+    }
+
+    @GetMapping("/email")
+    public ResponseEntity<?> getByEmail(@RequestParam String email) {
+        ClientResponseDTO client = service.getClientByEmail(email);
         return ResponseEntity.ok(client);
     }
 

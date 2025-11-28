@@ -1,4 +1,4 @@
-package co.edu.unicauca.api_gateway.facade.DTO.gateway;
+package co.edu.unicauca.api_gateway.facade.DTO.auth;
 
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;

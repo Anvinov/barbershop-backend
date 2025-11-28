@@ -28,12 +28,10 @@ public class ClientController {
         return clientClient.getById(id);
     }
 
-    @PutMapping("/{id}")
+    @GetMapping("/email")
     @PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<?> update(
-            @PathVariable Long id,
-            @RequestBody ClientRequestDTO request) {
-        return clientClient.update(id, request);
+    public ResponseEntity<?> getByEmail(@RequestParam String email){
+        return clientClient.getByEmail(email);
     }
 
     @PutMapping("/disable/{id}")

@@ -18,6 +18,18 @@ public class GlobalExceptionHandler {
                 .body(error("BAD_REQUEST", ex.getMessage(), HttpStatus.BAD_REQUEST));
     }
 
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<?> handleClientNotFound(UserNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(error("USER_NOT_FOUND", ex.getMessage(), HttpStatus.NOT_FOUND));
+    }
+
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<?> handleEmailDuplicate(EmailAlreadyExistsException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(error("EMAIL_ALREADY_EXISTS", ex.getMessage(), HttpStatus.CONFLICT));
+    }
+
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<?> handleFeignException(FeignException ex) {
         try {

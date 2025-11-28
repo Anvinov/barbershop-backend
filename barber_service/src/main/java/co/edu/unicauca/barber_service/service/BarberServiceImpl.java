@@ -4,7 +4,9 @@ import co.edu.unicauca.barber_service.entity.Barber;
 import co.edu.unicauca.barber_service.exception.BarberIsAlreadyDisableException;
 import co.edu.unicauca.barber_service.exception.BarberNotFoundException;
 import co.edu.unicauca.barber_service.exception.EmailAlreadyExistsException;
+import co.edu.unicauca.barber_service.exception.EmailNotFoundException;
 import co.edu.unicauca.barber_service.infra.dto.request.BarberRequestDTO;
+import co.edu.unicauca.barber_service.infra.dto.request.BarberSimpleRequestDTO;
 import co.edu.unicauca.barber_service.infra.dto.response.BarberResponseDTO;
 import co.edu.unicauca.barber_service.infra.mapper.BarberMapper;
 import co.edu.unicauca.barber_service.repository.BarberRepository;
@@ -42,7 +44,15 @@ public class BarberServiceImpl implements BarberService{
     }
 
     @Override
-    public BarberResponseDTO updateBarber(Long id, BarberRequestDTO request) {
+    public BarberResponseDTO getBarberByEmail(String email) {
+        Barber barber = barberRepository.findByEmail(email)
+                .orElseThrow(() -> new EmailNotFoundException(email));
+
+        return BarberMapper.toResponse(barber);
+    }
+
+    @Override
+    public BarberResponseDTO updateBarber(Long id, BarberSimpleRequestDTO request) {
         Barber barber = barberRepository.findById(id)
                 .orElseThrow(() -> new BarberNotFoundException(id));
 

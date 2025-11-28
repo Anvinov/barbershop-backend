@@ -4,6 +4,7 @@ import co.edu.unicauca.client_service.entity.Client;
 import co.edu.unicauca.client_service.exception.ClientIsAlreadyDisableException;
 import co.edu.unicauca.client_service.exception.ClientNotFoundException;
 import co.edu.unicauca.client_service.exception.EmailAlreadyExistsException;
+import co.edu.unicauca.client_service.exception.EmailNotFoundException;
 import co.edu.unicauca.client_service.infra.dto.ClientRequestDTO;
 import co.edu.unicauca.client_service.infra.dto.ClientResponseDTO;
 import co.edu.unicauca.client_service.infra.mapper.ClientMapper;
@@ -38,6 +39,14 @@ public class ClientServiceImpl implements ClientService {
     public ClientResponseDTO getClientById(Long id) {
         Client client = repository.findById(id)
                 .orElseThrow(() -> new ClientNotFoundException(id));
+
+        return ClientMapper.toResponse(client);
+    }
+
+    @Override
+    public ClientResponseDTO getClientByEmail(String email) {
+        Client client = repository.findByEmail(email)
+                .orElseThrow(() -> new EmailNotFoundException(email));
 
         return ClientMapper.toResponse(client);
     }

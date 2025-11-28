@@ -23,6 +23,12 @@ public class GlobalExceptionHandler {
                 .body(error("CLIENT_NOT_FOUND", ex.getMessage(), HttpStatus.NOT_FOUND));
     }
 
+    @ExceptionHandler(EmailNotFoundException.class)
+    public ResponseEntity<?> handleEmailNotFound(EmailNotFoundException ex) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(error("EMAIL_NOT_FOUND", ex.getMessage(), HttpStatus.NOT_FOUND));
+    }
+
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public ResponseEntity<?> handleEmailDuplicate(EmailAlreadyExistsException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)

@@ -1,40 +1,59 @@
 package co.edu.unicauca.api_gateway.controller;
 
-import co.edu.unicauca.api_gateway.facade.DTO.gateway.LoginRequestDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.gateway.SignupRequestDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.gateway.JwtResponseDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.gateway.MessageResponseDTO;
-import co.edu.unicauca.api_gateway.facade.service.AuthImpl;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.*;
+import co.edu.unicauca.api_gateway.facade.DTO.client.ClientRequestDTO;
+import co.edu.unicauca.api_gateway.facade.service.AuthService;
 import jakarta.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 @RestController
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    private final AuthImpl objAuthImpl;
+    private final AuthService authService;
 
-    public AuthController(AuthImpl objAuthImpl) {
-        this.objAuthImpl = objAuthImpl;
+    public AuthController(AuthService authService) {
+        this.authService = authService;
     }
 
     @PostMapping("/signin")
     public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequestDTO loginRequest) {
-        JwtResponseDTO token = this.objAuthImpl.authenticateUser(loginRequest);
+        JwtResponseDTO token = this.authService.authenticateUser(loginRequest);
         return ResponseEntity.ok(token);
     }
 
-    @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequestDTO signUpRequest) {
-        MessageResponseDTO response = objAuthImpl.registerUser(signUpRequest);
+    @PostMapping("/signup/client")
+    public ResponseEntity<?> registerClient(@Valid @RequestBody SignupClientRequestDTO signUpRequest) {
+        MessageResponseDTO response = authService.registerClient(signUpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/signup/barber")
+    public ResponseEntity<?> registerBarber(@Valid @RequestBody SignUpBarberRequestDTO signUpRequest) {
+        MessageResponseDTO response = authService.registerBarber(signUpRequest);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PostMapping("/update/{id}")
+    @PreAuthorize("hasRole('CLIENT') or hasRole('BARBER') or hasRole('ADMIN')")
+    public ResponseEntity<?> updateUser(
+            @Valid @PathVariable Long id,
+            @Valid @RequestBody ClientRequestDTO request) {
+        MessageResponseDTO response = authService.updateUser(id, request);
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/password/{id}")
+    @PreAuthorize("hasRole('CLIENT') or hasRole('BARBER') or hasRole('ADMIN')")
+    public ResponseEntity<?> changePassword(
+            @Valid @PathVariable Long id,
+            @Valid @RequestParam String pass) {
+        MessageResponseDTO response = authService.updatePassword(id, pass);
+        return ResponseEntity.ok(response);
     }
 }

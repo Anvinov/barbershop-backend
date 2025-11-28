@@ -8,6 +8,8 @@ public interface ClientService {
 
     ClientResponseDTO getClientById(Long id);
 
+    ClientResponseDTO getClientByEmail(String email);
+
     ClientResponseDTO updateClient(Long id, ClientRequestDTO request);
 
     ClientResponseDTO disableClient(Long id);
