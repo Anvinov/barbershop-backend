@@ -1,16 +1,16 @@
 package co.edu.unicauca.barber_service.service;
 
 import co.edu.unicauca.barber_service.entity.Barber;
-import co.edu.unicauca.barber_service.exception.BarberIsAlreadyDisableException;
-import co.edu.unicauca.barber_service.exception.BarberNotFoundException;
-import co.edu.unicauca.barber_service.exception.EmailAlreadyExistsException;
-import co.edu.unicauca.barber_service.exception.EmailNotFoundException;
+import co.edu.unicauca.barber_service.exception.*;
 import co.edu.unicauca.barber_service.infra.dto.request.BarberRequestDTO;
 import co.edu.unicauca.barber_service.infra.dto.request.BarberSimpleRequestDTO;
 import co.edu.unicauca.barber_service.infra.dto.response.BarberResponseDTO;
 import co.edu.unicauca.barber_service.infra.mapper.BarberMapper;
 import co.edu.unicauca.barber_service.repository.BarberRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Locale;
 
 @Service
 public class BarberServiceImpl implements BarberService{
@@ -30,9 +30,25 @@ public class BarberServiceImpl implements BarberService{
         Barber barber = BarberMapper.toEntity(request);
         barber.setAvailable(true);
 
+        try {
+            String name = barber.getName().substring(0, 1).toUpperCase(Locale.ROOT) + barber.getName().substring(1);
+            barber.setName(name);
+        }catch (Exception e){
+            throw new IllegalRequestException("Barber name not valid");
+        }
+
         barber = barberRepository.save(barber);
 
         return BarberMapper.toResponse(barber);
+    }
+
+    @Override
+    public List<BarberResponseDTO> getAllBarbers() {
+        List<Barber> barbers = barberRepository.findAll();
+
+        return barbers.stream()
+                .map(BarberMapper::toResponse)
+                .toList();
     }
 
     @Override

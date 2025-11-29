@@ -1,9 +1,9 @@
 package co.edu.unicauca.api_gateway.facade.client;
 
-import co.edu.unicauca.api_gateway.facade.DTO.barber.BarberRequestDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.barber.BarberSimpleRequestDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.barber.ScheduleRequestDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.barber.TimeSlotRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.barber.request.BarberRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.barber.request.BarberSimpleRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.barber.request.ScheduleRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.barber.request.TimeSlotRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,25 +21,25 @@ public interface BarberClient {
 
     // Barber endpoints
     @PostMapping
-    ResponseEntity<?> create(@RequestBody BarberRequestDTO request);
+    ResponseEntity<?> createBarber(@RequestBody BarberRequestDTO request);
 
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable Long id);
+    ResponseEntity<?> getBarberById(@PathVariable Long id);
 
     @GetMapping("/email")
-    ResponseEntity<?> getByEmail(@RequestParam String email);
+    ResponseEntity<?> getBarberByEmail(@RequestParam String email);
 
     @PutMapping("/{id}")
-    ResponseEntity<?> update(
+    ResponseEntity<?> updateBarber(
             @PathVariable Long id,
             @RequestBody BarberSimpleRequestDTO request);
 
     @PutMapping("/disable/{id}")
-    ResponseEntity<?> disableClient(@PathVariable Long id);
+    ResponseEntity<?> disableBarber(@PathVariable Long id);
 
     // Schedule endpoints
     @GetMapping("/schedule/{barberId}")
-    ResponseEntity<?> getSchedule(@PathVariable Long barberId);
+    ResponseEntity<?> getScheduleByBarberId(@PathVariable Long barberId);
 
     @PutMapping("/schedule/{barberId}")
     ResponseEntity<?> updateSchedule(
@@ -48,7 +48,7 @@ public interface BarberClient {
 
     // Time slots endpoints
     @GetMapping("/schedule/slot/{barberId}")
-    ResponseEntity<?> getScheduleByBarberId(
+    ResponseEntity<?> getTimeSlotsByBarberIdAndDate(
             @PathVariable Long barberId,
             @RequestParam LocalDate day);
 

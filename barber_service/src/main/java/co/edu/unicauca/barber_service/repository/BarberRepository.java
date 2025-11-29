@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface BarberRepository extends JpaRepository<Barber, Long> {
     Optional<Barber> findByEmail(String email);
+
     boolean existsById(Long id);
     boolean existsByEmail(String email);
 }

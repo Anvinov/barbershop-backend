@@ -35,25 +35,31 @@ public class BarberController {
 
     // Barber endpoints
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody BarberRequestDTO request) {
+    public ResponseEntity<?> createBarber(@RequestBody BarberRequestDTO request) {
         BarberResponseDTO barber = barberService.createBarber(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(barber);
     }
 
+    @GetMapping
+    public ResponseEntity<?> getAllBarbers() {
+        List<BarberResponseDTO> barbers = barberService.getAllBarbers();
+        return ResponseEntity.ok().body(barbers);
+    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<?> getByEmail(@PathVariable Long id) {
+    public ResponseEntity<?> getBarberById(@PathVariable Long id) {
         BarberResponseDTO barber = barberService.getBarberById(id);
         return ResponseEntity.ok(barber);
     }
 
     @GetMapping("/email")
-    public ResponseEntity<?> getByEmail(@RequestParam String email) {
+    public ResponseEntity<?> getBarberByEmail(@RequestParam String email) {
         BarberResponseDTO barber = barberService.getBarberByEmail(email);
         return ResponseEntity.ok(barber);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(
+    public ResponseEntity<?> updateBarber(
             @PathVariable Long id,
             @RequestBody BarberSimpleRequestDTO request) {
         BarberResponseDTO barber = barberService.updateBarber(id, request);
@@ -61,14 +67,14 @@ public class BarberController {
     }
 
     @PutMapping("/disable/{id}")
-    public ResponseEntity<?> disableClient(@PathVariable Long id) {
+    public ResponseEntity<?> disableBarber(@PathVariable Long id) {
         BarberResponseDTO barber = barberService.disableBarber(id);
         return ResponseEntity.ok(barber);
     }
 
     // Schedule endpoints
     @GetMapping("/schedule/{barberId}")
-    public ResponseEntity<?> getSchedule(@PathVariable Long barberId) {
+    public ResponseEntity<?> getScheduleByBarberId(@PathVariable Long barberId) {
         ScheduleResponseDTO schedule = scheduleService.getScheduleByBarberId(barberId);
         return ResponseEntity.ok(schedule);
     }
@@ -83,7 +89,7 @@ public class BarberController {
 
     // Time slots endpoints
     @GetMapping("/schedule/slot/{barberId}")
-    public ResponseEntity<?> getScheduleByBarberId(
+    public ResponseEntity<?> getTimeSlotsByBarberIdAndDate(
             @PathVariable Long barberId,
             @RequestParam LocalDate day) {
         List<TimeSlotResponseDTO> slots = scheduleService.getTimeSlotsByBarberIdAndDate(barberId, day);

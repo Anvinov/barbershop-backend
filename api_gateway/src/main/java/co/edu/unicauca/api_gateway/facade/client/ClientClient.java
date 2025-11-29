@@ -1,7 +1,6 @@
 package co.edu.unicauca.api_gateway.facade.client;
 
-import co.edu.unicauca.api_gateway.facade.DTO.client.ClientRequestDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.client.ClientResponseDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.client.request.ClientRequestDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,16 +15,16 @@ public interface  ClientClient {
     ResponseEntity<?> getHealth();
 
     @PostMapping
-    ResponseEntity<?> create(@RequestBody ClientRequestDTO request);
+    ResponseEntity<?> createClient(@RequestBody ClientRequestDTO request);
 
     @GetMapping("/{id}")
-    ResponseEntity<?> getById(@PathVariable Long id);
+    ResponseEntity<?> getClientById(@PathVariable Long id);
 
     @GetMapping("/email")
-    ResponseEntity<?> getByEmail(@RequestParam String email);
+    ResponseEntity<?> getClientByEmail(@RequestParam String email);
 
     @PutMapping("/{id}")
-    ResponseEntity<?> update(@PathVariable Long id, @RequestBody ClientRequestDTO request);
+    ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody ClientRequestDTO request);
 
     @PutMapping("/disable/{id}")
     ResponseEntity<?> disableClient(@PathVariable Long id);

@@ -1,15 +1,14 @@
 package co.edu.unicauca.client_service.service;
 
 import co.edu.unicauca.client_service.entity.Client;
-import co.edu.unicauca.client_service.exception.ClientIsAlreadyDisableException;
-import co.edu.unicauca.client_service.exception.ClientNotFoundException;
-import co.edu.unicauca.client_service.exception.EmailAlreadyExistsException;
-import co.edu.unicauca.client_service.exception.EmailNotFoundException;
+import co.edu.unicauca.client_service.exception.*;
 import co.edu.unicauca.client_service.infra.dto.ClientRequestDTO;
 import co.edu.unicauca.client_service.infra.dto.ClientResponseDTO;
 import co.edu.unicauca.client_service.infra.mapper.ClientMapper;
 import co.edu.unicauca.client_service.repository.ClientRepository;
 import org.springframework.stereotype.Service;
+
+import java.util.Locale;
 
 @Service
 public class ClientServiceImpl implements ClientService {
@@ -29,6 +28,13 @@ public class ClientServiceImpl implements ClientService {
 
         Client client = ClientMapper.toEntity(request);
         client.setAvailable(true);
+
+        try {
+            String name = client.getName().substring(0, 1).toUpperCase(Locale.ROOT) + client.getName().substring(1);
+            client.setName(name);
+        }catch (Exception e){
+            throw new IllegalRequestException("Client name not valid");
+        }
 
         repository.save(client);
 
@@ -78,7 +84,7 @@ public class ClientServiceImpl implements ClientService {
                 .orElseThrow(() -> new ClientNotFoundException(id));
 
         if(!client.isAvailable()){
-            throw new ClientIsAlreadyDisableException(id);
+            throw new ClientIsAlreadyDisabledException(id);
         }
 
         client.setAvailable(false);

@@ -1,0 +1,22 @@
+package co.edu.unicauca.api_gateway.facade.DTO.barber.request;
+
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public class BarberRequestDTO {
+    @NotBlank
+    private String name;
+
+    @NotBlank
+    private String phone;
+
+    @NotBlank
+    private String email;
+
+    @NotNull
+    private ScheduleRequestDTO schedule;
+}

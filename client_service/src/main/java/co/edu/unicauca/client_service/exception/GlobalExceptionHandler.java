@@ -11,10 +11,10 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(ClientIsAlreadyDisableException.class)
-    public ResponseEntity<?> handleClientIsAlreadyDisable(ClientIsAlreadyDisableException ex) {
+    @ExceptionHandler(ClientIsAlreadyDisabledException.class)
+    public ResponseEntity<?> handleClientIsAlreadyDisabled(ClientIsAlreadyDisabledException ex) {
         return ResponseEntity.status(HttpStatus.CONFLICT)
-                .body(error("CLIENT_IS_ALREADY_DISABLE", ex.getMessage(), HttpStatus.CONFLICT));
+                .body(error("CLIENT_IS_ALREADY_DISABLED", ex.getMessage(), HttpStatus.CONFLICT));
     }
 
     @ExceptionHandler(ClientNotFoundException.class)

@@ -1,6 +1,6 @@
 package co.edu.unicauca.api_gateway.controller;
 
-import co.edu.unicauca.api_gateway.facade.DTO.client.ClientRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.client.request.ClientRequestDTO;
 import co.edu.unicauca.api_gateway.facade.client.ClientClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -24,14 +24,14 @@ public class ClientController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<?> getById(@PathVariable Long id) {
-        return clientClient.getById(id);
+    public ResponseEntity<?> getClientById(@PathVariable Long id) {
+        return clientClient.getClientById(id);
     }
 
     @GetMapping("/email")
     @PreAuthorize("hasRole('CLIENT')")
-    public ResponseEntity<?> getByEmail(@RequestParam String email){
-        return clientClient.getByEmail(email);
+    public ResponseEntity<?> getClientByEmail(@RequestParam String email){
+        return clientClient.getClientByEmail(email);
     }
 
     @PutMapping("/disable/{id}")

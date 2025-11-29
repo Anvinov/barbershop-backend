@@ -10,12 +10,16 @@ import co.edu.unicauca.api_gateway.data.entity.Role;
 import co.edu.unicauca.api_gateway.data.entity.User;
 import co.edu.unicauca.api_gateway.data.repository.RoleRepository;
 import co.edu.unicauca.api_gateway.data.repository.UserRepository;
-import co.edu.unicauca.api_gateway.facade.DTO.auth.*;
-import co.edu.unicauca.api_gateway.facade.DTO.barber.BarberRequestDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.barber.BarberResponseDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.barber.BarberSimpleRequestDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.client.ClientRequestDTO;
-import co.edu.unicauca.api_gateway.facade.DTO.client.ClientResponseDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.request.SignUpBarberRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.request.SignupClientRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.response.JwtResponseDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.request.LoginRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.response.MessageResponseDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.barber.request.BarberRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.barber.response.BarberResponseDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.barber.request.BarberSimpleRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.client.request.ClientRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.client.response.ClientResponseDTO;
 import co.edu.unicauca.api_gateway.facade.client.BarberClient;
 import co.edu.unicauca.api_gateway.facade.client.ClientClient;
 import co.edu.unicauca.api_gateway.security.exception.EmailAlreadyExistsException;
@@ -81,7 +85,7 @@ public class AuthServiceImpl implements AuthService {
 
         Set<Role> roles = new HashSet<>();
 
-        clientClient.create(new ClientRequestDTO(
+        clientClient.createClient(new ClientRequestDTO(
                 signUpRequest.getName(),
                 signUpRequest.getPhone(),
                 signUpRequest.getEmail()
@@ -105,7 +109,7 @@ public class AuthServiceImpl implements AuthService {
 
         Set<Role> roles = new HashSet<>();
 
-        barberClient.create(new BarberRequestDTO(
+        barberClient.createBarber(new BarberRequestDTO(
                 signUpRequest.getName(),
                 signUpRequest.getPhone(),
                 signUpRequest.getEmail(),
@@ -142,16 +146,16 @@ public class AuthServiceImpl implements AuthService {
                     System.out.println("ADMIN");
                     break;
                 case ROLE_BARBER:
-                    BarberResponseDTO barber = (BarberResponseDTO) barberClient.getByEmail(user.getEmail()).getBody();
-                    barberClient.update(barber.getId(), new BarberSimpleRequestDTO(
+                    BarberResponseDTO barber = (BarberResponseDTO) barberClient.getBarberByEmail(user.getEmail()).getBody();
+                    barberClient.updateBarber(barber.getId(), new BarberSimpleRequestDTO(
                             barber.getName(),
                             barber.getPhone(),
                             barber.getEmail()
                     ));
                     break;
                 case ROLE_CLIENT:
-                    ClientResponseDTO client = (ClientResponseDTO) clientClient.getByEmail(user.getEmail()).getBody();
-                    clientClient.update(client.getId(), clientRequest);
+                    ClientResponseDTO client = (ClientResponseDTO) clientClient.getClientByEmail(user.getEmail()).getBody();
+                    clientClient.updateClient(client.getId(), clientRequest);
                     break;
                 default:
                     throw new RuntimeException("Error: Role is not found.");

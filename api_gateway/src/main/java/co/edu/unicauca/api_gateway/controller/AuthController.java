@@ -1,7 +1,11 @@
 package co.edu.unicauca.api_gateway.controller;
 
-import co.edu.unicauca.api_gateway.facade.DTO.auth.*;
-import co.edu.unicauca.api_gateway.facade.DTO.client.ClientRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.request.SignUpBarberRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.request.SignupClientRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.response.JwtResponseDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.request.LoginRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.auth.response.MessageResponseDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.client.request.ClientRequestDTO;
 import co.edu.unicauca.api_gateway.facade.service.AuthService;
 import jakarta.validation.Valid;
 

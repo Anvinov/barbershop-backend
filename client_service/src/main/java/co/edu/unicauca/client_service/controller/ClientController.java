@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/client")
 public class ClientController {
 
-    private final ClientService service;
+    private final ClientService clientService;
 
-    public ClientController(ClientService service) {
-        this.service = service;
+    public ClientController(ClientService clientService) {
+        this.clientService = clientService;
     }
 
     @GetMapping("/health")
@@ -23,34 +23,34 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<?> create(@RequestBody ClientRequestDTO request) {
-        ClientResponseDTO client = service.createClient(request);
+    public ResponseEntity<?> createClient(@RequestBody ClientRequestDTO request) {
+        ClientResponseDTO client = clientService.createClient(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(client);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<?> getByEmail(@PathVariable Long id) {
-        ClientResponseDTO client = service.getClientById(id);
+    public ResponseEntity<?> getClientById(@PathVariable Long id) {
+        ClientResponseDTO client = clientService.getClientById(id);
         return ResponseEntity.ok(client);
     }
 
     @GetMapping("/email")
-    public ResponseEntity<?> getByEmail(@RequestParam String email) {
-        ClientResponseDTO client = service.getClientByEmail(email);
+    public ResponseEntity<?> getClientByEmail(@RequestParam String email) {
+        ClientResponseDTO client = clientService.getClientByEmail(email);
         return ResponseEntity.ok(client);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<?> update(
+    public ResponseEntity<?> updateClient(
             @PathVariable Long id,
             @RequestBody ClientRequestDTO request) {
-        ClientResponseDTO client = service.updateClient(id, request);
+        ClientResponseDTO client = clientService.updateClient(id, request);
         return ResponseEntity.ok(client);
     }
 
     @PutMapping("/disable/{id}")
     public ResponseEntity<?> disableClient(@PathVariable Long id) {
-        ClientResponseDTO client = service.disableClient(id);
+        ClientResponseDTO client = clientService.disableClient(id);
         return ResponseEntity.ok(client);
     }
 }
