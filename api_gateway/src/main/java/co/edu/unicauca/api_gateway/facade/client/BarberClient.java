@@ -4,6 +4,7 @@ import co.edu.unicauca.api_gateway.facade.DTO.barber.request.BarberRequestDTO;
 import co.edu.unicauca.api_gateway.facade.DTO.barber.request.BarberSimpleRequestDTO;
 import co.edu.unicauca.api_gateway.facade.DTO.barber.request.ScheduleRequestDTO;
 import co.edu.unicauca.api_gateway.facade.DTO.barber.request.TimeSlotRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.barber.response.BarberResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public interface BarberClient {
     ResponseEntity<?> getBarberById(@PathVariable Long id);
 
     @GetMapping("/email")
-    ResponseEntity<?> getBarberByEmail(@RequestParam String email);
+    ResponseEntity<BarberResponseDTO> getBarberByEmail(@RequestParam String email);
 
     @PutMapping("/{id}")
     ResponseEntity<?> updateBarber(

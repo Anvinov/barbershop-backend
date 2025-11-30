@@ -44,7 +44,7 @@ public class AuthController {
     }
 
     @PostMapping("/update/{id}")
-    @PreAuthorize("hasRole('CLIENT') or hasRole('BARBER') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('CLIENT') or hasRole('BARBER')")
     public ResponseEntity<?> updateUser(
             @Valid @PathVariable Long id,
             @Valid @RequestBody ClientRequestDTO request) {

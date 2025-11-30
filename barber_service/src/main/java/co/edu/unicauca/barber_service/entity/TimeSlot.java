@@ -24,9 +24,10 @@ public class TimeSlot {
 
     private LocalDate date;
     private LocalTime startTime;
-
     private LocalTime endTime;
     private SlotStatus status;
+
+    @NotBlank
     private String reason;
 
     @ManyToOne(fetch = FetchType.LAZY)

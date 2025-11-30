@@ -1,6 +1,7 @@
 package co.edu.unicauca.api_gateway.facade.client;
 
 import co.edu.unicauca.api_gateway.facade.DTO.client.request.ClientRequestDTO;
+import co.edu.unicauca.api_gateway.facade.DTO.client.response.ClientResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public interface  ClientClient {
     ResponseEntity<?> getClientById(@PathVariable Long id);
 
     @GetMapping("/email")
-    ResponseEntity<?> getClientByEmail(@RequestParam String email);
+    ResponseEntity<ClientResponseDTO> getClientByEmail(@RequestParam String email);
 
     @PutMapping("/{id}")
     ResponseEntity<?> updateClient(@PathVariable Long id, @RequestBody ClientRequestDTO request);

@@ -3,6 +3,7 @@ package co.edu.unicauca.api_gateway.facade.service;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Collectors;
 
 import co.edu.unicauca.api_gateway.data.entity.ERole;
@@ -71,9 +72,32 @@ public class AuthServiceImpl implements AuthService {
             .map(item -> item.getAuthority())
             .collect(Collectors.toList());
 
+        AtomicReference<String> name = new AtomicReference<>("");
+
+        roles.forEach(role -> {
+            switch (role) {
+                case "ROLE_ADMIN":
+
+                    break;
+                case "ROLE_BARBER":
+                    BarberResponseDTO barber = barberClient.getBarberByEmail(userDetails.getUsername()).getBody();
+                    name.set(barber.getName());
+                    break;
+                case "ROLE_CLIENT":
+                    ClientResponseDTO client = clientClient.getClientByEmail(userDetails.getUsername()).getBody();
+                    name.set(client.getName());
+                    break;
+                default:
+                    throw new RuntimeException("Error: Role is not found.");
+            }
+
+        });
+
+
         return new JwtResponseDTO(
                 jwt,
                 userDetails.getId(),
+                name.toString(),
                 userDetails.getUsername(),
                 roles
         );
@@ -142,9 +166,6 @@ public class AuthServiceImpl implements AuthService {
 
         roles.forEach(role -> {
             switch (role.getName()) {
-                case ROLE_ADMIN:
-                    System.out.println("ADMIN");
-                    break;
                 case ROLE_BARBER:
                     BarberResponseDTO barber = (BarberResponseDTO) barberClient.getBarberByEmail(user.getEmail()).getBody();
                     barberClient.updateBarber(barber.getId(), new BarberSimpleRequestDTO(
@@ -154,12 +175,13 @@ public class AuthServiceImpl implements AuthService {
                     ));
                     break;
                 case ROLE_CLIENT:
-                    ClientResponseDTO client = (ClientResponseDTO) clientClient.getClientByEmail(user.getEmail()).getBody();
+                    ClientResponseDTO client = clientClient.getClientByEmail(user.getEmail()).getBody();
                     clientClient.updateClient(client.getId(), clientRequest);
                     break;
                 default:
                     throw new RuntimeException("Error: Role is not found.");
             }
+
         });
 
         user.setEmail(clientRequest.getEmail());
