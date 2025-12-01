@@ -38,6 +38,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup/barber")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> registerBarber(@Valid @RequestBody SignUpBarberRequestDTO signUpRequest) {
         MessageResponseDTO response = authService.registerBarber(signUpRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

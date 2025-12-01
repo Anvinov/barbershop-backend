@@ -1,4 +1,4 @@
-package co.edu.unicauca.reservation_service.infra.dto.request;
+package co.edu.unicauca.reservation_service.infra.dto.reservation.request;
 
 import lombok.Getter;
 

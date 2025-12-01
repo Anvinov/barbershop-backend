@@ -9,8 +9,11 @@ import co.edu.unicauca.service_service.service.CategoryService;
 import co.edu.unicauca.service_service.service.ServiceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -75,7 +78,7 @@ public class ServiceController {
 
         if (category != null) {
             response = serviceService.getServicesByCategory(category);
-        }else {
+        } else {
             response = serviceService.getAllServices();
         }
 
@@ -97,6 +100,12 @@ public class ServiceController {
     @PutMapping("/enable/{id}")
     public ResponseEntity<?> enableService(@PathVariable Long id) {
         ServiceResponseDTO response = serviceService.enableService(id);
+        return ResponseEntity.ok().body(response);
+    }
+
+    @PostMapping("/disabled")
+    public ResponseEntity<?> servicesAreDisabled(@RequestBody List<Long> ids) {
+        List<Long> response = serviceService.servicesAreDisabled(ids);
         return ResponseEntity.ok().body(response);
     }
 }

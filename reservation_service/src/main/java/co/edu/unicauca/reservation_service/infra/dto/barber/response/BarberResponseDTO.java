@@ -1,4 +1,4 @@
-package co.edu.unicauca.barber_service.infra.dto.response;
+package co.edu.unicauca.reservation_service.infra.dto.barber.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

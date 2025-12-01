@@ -1,9 +1,8 @@
 package co.edu.unicauca.reservation_service.infra.mapper;
 
 import co.edu.unicauca.reservation_service.entity.Reservation;
-import co.edu.unicauca.reservation_service.factory.ReservationStateFactory;
-import co.edu.unicauca.reservation_service.infra.dto.request.ReservationRequestDTO;
-import co.edu.unicauca.reservation_service.infra.dto.response.ReservationResponseDTO;
+import co.edu.unicauca.reservation_service.infra.dto.reservation.request.ReservationRequestDTO;
+import co.edu.unicauca.reservation_service.infra.dto.reservation.response.ReservationResponseDTO;
 
 public class ReservationMapper {
 

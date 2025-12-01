@@ -12,6 +12,7 @@ public class BarberMapper {
                 barber.getName(),
                 barber.getPhone(),
                 barber.getEmail(),
+                barber.isAvailable(),
                 ScheduleMapper.toResponse(barber.getSchedule())
         );
     }

@@ -22,7 +22,7 @@ public class BarberController {
 
     @GetMapping("/health")
     public ResponseEntity<?> getHealth() {
-        return ResponseEntity.ok().build();
+        return barberClient.getHealth();
     }
 
     // Barber endpoints
@@ -39,7 +39,7 @@ public class BarberController {
     }
 
     @PutMapping("/disable/{id}")
-    @PreAuthorize("hasRole('BARBER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('BARBER')")
     public ResponseEntity<?> disableBarber(@PathVariable Long id) {
         return barberClient.disableBarber(id);
     }
@@ -69,7 +69,7 @@ public class BarberController {
     }
 
     @PostMapping("/schedule/slot/{barberId}")
-    @PreAuthorize("hasRole('BARBER')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('BARBER')")
     public ResponseEntity<?> addTimeSlot(
             @PathVariable Long barberId,
             @RequestBody TimeSlotRequestDTO request) {
@@ -77,7 +77,7 @@ public class BarberController {
     }
 
     @DeleteMapping("schedule/slot/{id}")
-    @PreAuthorize("hasRole('BARBER')")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<?> deleteTimeSlot(@PathVariable Long id){
         return barberClient.deleteTimeSlot(id);
     }

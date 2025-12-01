@@ -1,15 +1,14 @@
-package co.edu.unicauca.barber_service.infra.dto.response;
+package co.edu.unicauca.reservation_service.infra.dto.client.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class BarberResponseDTO {
+public class ClientResponseDTO {
     private Long id;
     private String name;
     private String phone;
     private String email;
     private boolean available;
-    private ScheduleResponseDTO schedule;
 }

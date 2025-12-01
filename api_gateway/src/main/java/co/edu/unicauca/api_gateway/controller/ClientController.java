@@ -1,6 +1,5 @@
 package co.edu.unicauca.api_gateway.controller;
 
-import co.edu.unicauca.api_gateway.facade.DTO.client.request.ClientRequestDTO;
 import co.edu.unicauca.api_gateway.facade.client.ClientClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,7 +18,7 @@ public class ClientController {
 
     @GetMapping("/health")
     public ResponseEntity<?> getHealth() {
-        return ResponseEntity.ok().build();
+        return clientClient.getHealth();
     }
 
     @GetMapping("/{id}")

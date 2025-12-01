@@ -34,4 +34,21 @@ public class Reservation {
     private LocalTime endTime;
 
     private List<Long> services;
+
+    public void startReservation() {
+        state.startReservation(this);
+    }
+
+    public void cancelReservation() {
+        state.cancelReservation(this);
+    }
+
+    public void deleteReservation() {
+        state.deleteReservation(this);
+    }
+
+    public void finishReservation() {
+        state.finishReservation(this);
+    }
+
 }

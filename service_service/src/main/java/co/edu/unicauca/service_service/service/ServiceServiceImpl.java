@@ -11,7 +11,10 @@ import co.edu.unicauca.service_service.repository.ServiceRepository;
 import org.springframework.stereotype.Service;
 
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ServiceServiceImpl implements ServiceService {
@@ -127,5 +130,21 @@ public class ServiceServiceImpl implements ServiceService {
         serviceRepository.save(service);
 
         return ServiceMapper.toResponse(service);
+    }
+
+    @Override
+    public List<Long> servicesAreDisabled(List<Long> ids) {
+        List<Long> servicesDisabled = new ArrayList<>();
+
+        for(Long id : ids){
+            ServiceEntity service = serviceRepository.findById(id)
+                    .orElseThrow(() -> new ServiceNotFoundException(id));
+
+            if (!service.isAvailable()) {
+                servicesDisabled.add(service.getId());
+            }
+        }
+
+        return servicesDisabled;
     }
 }
