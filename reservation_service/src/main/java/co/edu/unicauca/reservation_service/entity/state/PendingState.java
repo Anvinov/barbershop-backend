@@ -22,7 +22,7 @@ public class PendingState implements ReservationState{
 
     @Override
     public void finishReservation(Reservation reservation) {
-        throw new StateTransitionNotAllowedException("The reservation cannot change to \"FINISH\" from \"PENDING\"");
+        throw new StateTransitionNotAllowedException("The reservation cannot change to FINISH from PENDING");
     }
 
     @Override

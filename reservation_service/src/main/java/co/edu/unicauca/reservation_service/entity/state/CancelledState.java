@@ -6,22 +6,22 @@ import co.edu.unicauca.reservation_service.exception.StateTransitionNotAllowedEx
 public class CancelledState implements ReservationState{
     @Override
     public void startReservation(Reservation reservation) {
-        throw new StateTransitionNotAllowedException("The reservation cannot change to \"STARTED\" from \"CANCELLED\"");
+        throw new StateTransitionNotAllowedException("The reservation cannot change to STARTED from CANCELLED");
     }
 
     @Override
     public void cancelReservation(Reservation reservation) {
-        throw new StateTransitionNotAllowedException("The reservation has already been \"CANCELLED\"");
+        throw new StateTransitionNotAllowedException("The reservation has already been CANCELLED");
     }
 
     @Override
     public void deleteReservation(Reservation reservation) {
-        throw new StateTransitionNotAllowedException("The reservation cannot change to \"DELETED\" from \"CANCELLED\"");
+        throw new StateTransitionNotAllowedException("The reservation cannot change to DELETED from CANCELLED");
     }
 
     @Override
     public void finishReservation(Reservation reservation) {
-        throw new StateTransitionNotAllowedException("The reservation cannot change to \"FINISHED\" from \"CANCELLED\"");
+        throw new StateTransitionNotAllowedException("The reservation cannot change to FINISHED from CANCELLED");
     }
 
     @Override

@@ -153,6 +153,8 @@ public class ReservationServiceImpl implements ReservationService{
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ReservationNotFoundException(id));
 
+        reservation.finishReservation();
+
         TimeSlotRequestDTO timeSlotRequest = new TimeSlotRequestDTO(
                 reservation.getDate(),
                 reservation.getStartTime(),
@@ -162,8 +164,6 @@ public class ReservationServiceImpl implements ReservationService{
         );
 
         barberClient.addTimeSlot(reservation.getBarberId(), timeSlotRequest);
-
-        reservation.finishReservation();
 
         reservationRepository.save(reservation);
 
