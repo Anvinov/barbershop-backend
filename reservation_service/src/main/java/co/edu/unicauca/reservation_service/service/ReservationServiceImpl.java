@@ -6,6 +6,7 @@ import co.edu.unicauca.reservation_service.exception.*;
 import co.edu.unicauca.reservation_service.infra.client.BarberClient;
 import co.edu.unicauca.reservation_service.infra.client.ClientClient;
 import co.edu.unicauca.reservation_service.infra.client.ServiceClient;
+import co.edu.unicauca.reservation_service.infra.dto.barber.request.TimeSlotRequestDTO;
 import co.edu.unicauca.reservation_service.infra.dto.barber.response.BarberResponseDTO;
 import co.edu.unicauca.reservation_service.infra.dto.client.response.ClientResponseDTO;
 import co.edu.unicauca.reservation_service.infra.dto.reservation.request.ReservationRequestDTO;
@@ -17,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ReservationServiceImpl implements ReservationService{
@@ -66,7 +66,6 @@ public class ReservationServiceImpl implements ReservationService{
                         barber.getSchedule().getEndTime()
                 );
             }
-
 
         } catch (RetryableException  e) {
             throw new ServiceNotAvailableException("barbers");
@@ -132,6 +131,8 @@ public class ReservationServiceImpl implements ReservationService{
 
         reservation.startReservation();
 
+        reservationRepository.save(reservation);
+
         return ReservationMapper.toResponse(reservation);
     }
 
@@ -142,6 +143,8 @@ public class ReservationServiceImpl implements ReservationService{
 
         reservation.cancelReservation();
 
+        reservationRepository.save(reservation);
+
         return ReservationMapper.toResponse(reservation);
     }
 
@@ -150,7 +153,19 @@ public class ReservationServiceImpl implements ReservationService{
         Reservation reservation = reservationRepository.findById(id)
                 .orElseThrow(() -> new ReservationNotFoundException(id));
 
+        TimeSlotRequestDTO timeSlotRequest = new TimeSlotRequestDTO(
+                reservation.getDate(),
+                reservation.getStartTime(),
+                reservation.getEndTime(),
+                "IN_SERVICE",
+                "Atencion finalizada"
+        );
+
+        barberClient.addTimeSlot(reservation.getBarberId(), timeSlotRequest);
+
         reservation.finishReservation();
+
+        reservationRepository.save(reservation);
 
         return ReservationMapper.toResponse(reservation);
     }
@@ -161,6 +176,8 @@ public class ReservationServiceImpl implements ReservationService{
                 .orElseThrow(() -> new ReservationNotFoundException(id));
 
         reservation.deleteReservation();
+
+        reservationRepository.save(reservation);
 
         return ReservationMapper.toResponse(reservation);
     }

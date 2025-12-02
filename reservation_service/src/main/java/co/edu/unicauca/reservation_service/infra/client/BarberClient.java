@@ -2,6 +2,8 @@ package co.edu.unicauca.reservation_service.infra.client;
 
 import co.edu.unicauca.reservation_service.infra.dto.barber.request.TimeSlotRequestDTO;
 import co.edu.unicauca.reservation_service.infra.dto.barber.response.BarberResponseDTO;
+import co.edu.unicauca.reservation_service.infra.dto.barber.response.ScheduleResponseDTO;
+import co.edu.unicauca.reservation_service.infra.dto.barber.response.TimeSlotResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,16 +22,16 @@ public interface BarberClient {
 
     // Schedule endpoints
     @GetMapping("/schedule/{barberId}")
-    ResponseEntity<?> getScheduleByBarberId(@PathVariable Long barberId);
+    ResponseEntity<ScheduleResponseDTO> getScheduleByBarberId(@PathVariable Long barberId);
 
     // Time slots endpoints
     @GetMapping("/schedule/slot/{barberId}")
-    ResponseEntity<?> getTimeSlotsByBarberIdAndDate(
+    ResponseEntity<ScheduleResponseDTO> getTimeSlotsByBarberIdAndDate(
             @PathVariable Long barberId,
             @RequestParam LocalDate day);
 
     @PostMapping("/schedule/slot/{barberId}")
-    ResponseEntity<?> addTimeSlot(
+    ResponseEntity<TimeSlotResponseDTO> addTimeSlot(
             @PathVariable Long barberId,
             @RequestBody TimeSlotRequestDTO request);
 

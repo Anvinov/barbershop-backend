@@ -1,11 +1,13 @@
 package co.edu.unicauca.api_gateway.facade.DTO.auth.request;
 
 import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
+@AllArgsConstructor
 public class SignupClientRequestDTO {
     @NotBlank
     private String name;

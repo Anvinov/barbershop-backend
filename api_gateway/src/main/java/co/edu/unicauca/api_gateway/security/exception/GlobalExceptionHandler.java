@@ -30,6 +30,12 @@ public class GlobalExceptionHandler {
                 .body(error("EMAIL_ALREADY_EXISTS", ex.getMessage(), HttpStatus.CONFLICT));
     }
 
+    @ExceptionHandler(UserDisabledException.class)
+    public ResponseEntity<?> handleUserDisabled(UserDisabledException ex) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(error("USER_DISABLED", ex.getMessage(), HttpStatus.CONFLICT));
+    }
+
     @ExceptionHandler(FeignException.class)
     public ResponseEntity<?> handleFeignException(FeignException ex) {
         try {
@@ -49,7 +55,7 @@ public class GlobalExceptionHandler {
         } catch (Exception e) {
             return ResponseEntity
                     .status(500)
-                    .body(Map.of("error", "UNPARSABLE_REMOTE_ERROR"));
+                    .body(Map.of("error", ex.getMessage()));
         }
     }
 

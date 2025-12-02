@@ -86,7 +86,7 @@ public class GlobalExceptionHandler {
         } catch (Exception e) {
             return ResponseEntity
                     .status(500)
-                    .body(Map.of("error", "UNPARSABLE_REMOTE_ERROR"));
+                    .body(Map.of("error", ex.getMessage()));
         }
     }
 

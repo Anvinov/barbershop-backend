@@ -24,6 +24,7 @@ import co.edu.unicauca.api_gateway.facade.DTO.client.response.ClientResponseDTO;
 import co.edu.unicauca.api_gateway.facade.client.BarberClient;
 import co.edu.unicauca.api_gateway.facade.client.ClientClient;
 import co.edu.unicauca.api_gateway.security.exception.EmailAlreadyExistsException;
+import co.edu.unicauca.api_gateway.security.exception.UserDisabledException;
 import co.edu.unicauca.api_gateway.security.exception.UserNotFoundException;
 import co.edu.unicauca.api_gateway.security.jwt.JwtUtils;
 import co.edu.unicauca.api_gateway.security.service.UserDetailsImpl;
@@ -81,10 +82,18 @@ public class AuthServiceImpl implements AuthService {
                     break;
                 case "ROLE_BARBER":
                     BarberResponseDTO barber = barberClient.getBarberByEmail(userDetails.getUsername()).getBody();
+
+                    assert barber != null;
+                    if(!barber.isAvailable()) throw new UserDisabledException("User " + userDetails.getUsername() + " is disabled");
+
                     name.set(barber.getName());
                     break;
                 case "ROLE_CLIENT":
                     ClientResponseDTO client = clientClient.getClientByEmail(userDetails.getUsername()).getBody();
+
+                    assert client != null;
+                    if(!client.isAvailable()) throw new UserDisabledException("User " + userDetails.getUsername() + " is disabled");
+
                     name.set(client.getName());
                     break;
                 default:

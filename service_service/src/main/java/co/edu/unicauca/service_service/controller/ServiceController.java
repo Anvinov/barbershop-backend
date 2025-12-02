@@ -9,11 +9,8 @@ import co.edu.unicauca.service_service.service.CategoryService;
 import co.edu.unicauca.service_service.service.ServiceService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 

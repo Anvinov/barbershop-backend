@@ -12,5 +12,6 @@ public class BarberResponseDTO {
     private String name;
     private String phone;
     private String email;
+    private boolean available;
     private ScheduleResponseDTO schedule;
 }
