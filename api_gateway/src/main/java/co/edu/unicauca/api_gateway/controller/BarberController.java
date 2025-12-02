@@ -8,6 +8,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200", maxAge = 3600, allowCredentials = "true")
 @RestController
@@ -26,6 +27,12 @@ public class BarberController {
     }
 
     // Barber endpoints
+    @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<?> getAllBarbers() {
+        return barberClient.getAllBarbers();
+    }
+    
     @GetMapping("/{id}")
     @PreAuthorize("hasRole('BARBER')")
     public ResponseEntity<?> getBarberById(@PathVariable Long id) {

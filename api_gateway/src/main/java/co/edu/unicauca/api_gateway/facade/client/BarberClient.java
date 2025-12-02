@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @FeignClient(
         name = "barber-service",
@@ -23,6 +24,9 @@ public interface BarberClient {
     // Barber endpoints
     @PostMapping
     ResponseEntity<?> createBarber(@RequestBody BarberRequestDTO request);
+
+    @GetMapping
+    ResponseEntity<?> getAllBarbers();
 
     @GetMapping("/{id}")
     ResponseEntity<?> getBarberById(@PathVariable Long id);
