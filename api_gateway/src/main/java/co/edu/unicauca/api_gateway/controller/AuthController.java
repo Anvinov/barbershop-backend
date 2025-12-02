@@ -44,7 +44,7 @@ public class AuthController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     @PreAuthorize("hasRole('CLIENT') or hasRole('BARBER')")
     public ResponseEntity<?> updateUser(
             @Valid @PathVariable Long id,
@@ -53,7 +53,7 @@ public class AuthController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping("/password/{id}")
+    @PutMapping("/password/{id}")
     @PreAuthorize("hasRole('CLIENT') or hasRole('BARBER') or hasRole('ADMIN')")
     public ResponseEntity<?> changePassword(
             @Valid @PathVariable Long id,
