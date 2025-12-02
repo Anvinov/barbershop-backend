@@ -155,12 +155,13 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public MessageResponseDTO updateUser(Long id, ClientRequestDTO clientRequest) {
 
-        if(userRepository.existsByEmail(clientRequest.getEmail())) {
-            throw new EmailAlreadyExistsException(clientRequest.getEmail());
-        }
-
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new UserNotFoundException(id));
+
+        if (!user.getEmail().equals(clientRequest.getEmail())
+                && userRepository.existsByEmail(clientRequest.getEmail())) {
+            throw new EmailAlreadyExistsException(clientRequest.getEmail());
+        }
 
         Set<Role> roles = user.getRoles();
 
