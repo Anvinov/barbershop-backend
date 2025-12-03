@@ -28,7 +28,7 @@ public class BarberController {
 
     // Barber endpoints
     @GetMapping
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CLIENT')")
     public ResponseEntity<?> getAllBarbers() {
         return barberClient.getAllBarbers();
     }
