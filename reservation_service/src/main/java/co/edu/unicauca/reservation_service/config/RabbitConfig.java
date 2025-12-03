@@ -1,4 +1,4 @@
-package co.edu.unicauca.notification_service.config;
+package co.edu.unicauca.reservation_service.config;
 
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;

@@ -8,14 +8,13 @@ import co.edu.unicauca.reservation_service.infra.client.ClientClient;
 import co.edu.unicauca.reservation_service.infra.client.ServiceClient;
 import co.edu.unicauca.reservation_service.infra.dto.barber.request.TimeSlotRequestDTO;
 import co.edu.unicauca.reservation_service.infra.dto.barber.response.BarberResponseDTO;
-import co.edu.unicauca.reservation_service.infra.dto.client.response.ClientResponseDTO;
+import co.edu.unicauca.reservation_service.infra.dto.client.ClientResponseDTO;
 import co.edu.unicauca.reservation_service.infra.dto.reservation.request.ReservationRequestDTO;
 import co.edu.unicauca.reservation_service.infra.dto.reservation.response.ReservationResponseDTO;
 import co.edu.unicauca.reservation_service.infra.dto.service.ServiceResponseDTO;
 import co.edu.unicauca.reservation_service.infra.mapper.ReservationMapper;
 import co.edu.unicauca.reservation_service.repository.ReservationRepository;
 import feign.RetryableException;
-import org.springframework.jmx.export.notification.NotificationPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -30,18 +29,22 @@ public class ReservationServiceImpl implements ReservationService{
     private final BarberClient barberClient;
     private final ServiceClient serviceClient;
 
-    private final NotificationPublisher notificationPublisher;
+    private final NotificationPublisherService  notificationPublisherService;
 
-    public ReservationServiceImpl(ReservationRepository reservationRepository, ClientClient clientClient, BarberClient barberClient, ServiceClient serviceClient, NotificationPublisher notificationPublisher) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, ClientClient clientClient, BarberClient barberClient, ServiceClient serviceClient, NotificationPublisherService notificationPublisherService) {
         this.reservationRepository = reservationRepository;
         this.clientClient = clientClient;
         this.barberClient = barberClient;
         this.serviceClient = serviceClient;
-        this.notificationPublisher = notificationPublisher;
+        this.notificationPublisherService = notificationPublisherService;
     }
 
     @Override
     public ReservationResponseDTO createReservation(ReservationRequestDTO request) {
+
+        String clientNumber = null;
+        String barberName = null;
+        String servicesNames = "";
 
         // Validations for clients
         try {
@@ -49,6 +52,8 @@ public class ReservationServiceImpl implements ReservationService{
 
             assert client != null;
             if(!client.isAvailable()) throw new ClientDisabledException(client.getId());
+
+            clientNumber = client.getPhone();
 
         } catch (RetryableException e) {
             throw new ServiceNotAvailableException("clients");
@@ -72,6 +77,8 @@ public class ReservationServiceImpl implements ReservationService{
                 );
             }
 
+            barberName = barber.getName();
+
         } catch (RetryableException  e) {
             throw new ServiceNotAvailableException("barbers");
         }
@@ -89,7 +96,7 @@ public class ReservationServiceImpl implements ReservationService{
 
             for(ServiceResponseDTO service : services){
                 if (request.getServices().contains(service.getId())) {
-
+                    servicesNames += "    " + service.getName() + "\n";
                 }
             }
 
@@ -129,7 +136,9 @@ public class ReservationServiceImpl implements ReservationService{
 
         reservation.setState(new PendingState());
 
-        NotificationPublisher
+        if (clientNumber != null && barberName != null && !servicesNames.isEmpty()) {
+            notificationPublisherService.sendWhatsappMessage(clientNumber, reservation, barberName, servicesNames);
+        }
 
         reservationRepository.save(reservation);
 

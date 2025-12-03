@@ -1,4 +1,4 @@
-package co.edu.unicauca.reservation_service.RabbitMQ.dto;
+package co.edu.unicauca.reservation_service.infra.dto.notification;
 
 import lombok.Getter;
 import lombok.Setter;

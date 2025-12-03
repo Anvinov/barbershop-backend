@@ -21,10 +21,12 @@ public class WhatsappService {
         Twilio.init(accountSid, authToken);
 
         Message.creator(
-                new com.twilio.type.PhoneNumber("whatsapp:" + to),
+                new com.twilio.type.PhoneNumber("whatsapp:+57" + to),
                 new com.twilio.type.PhoneNumber(from),
                 body
         ).create();
+
+        System.out.println("Message sent to whatsapp:+57" + to);
     }
 }
 

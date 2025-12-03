@@ -17,7 +17,7 @@ public class WhatsappNotificationListener {
 
     @RabbitListener(queues = RabbitConfig.QUEUE)
     public void receiveMessage(WhatsappMessageDTO message) {
-        System.out.println("Mensaje recibido: " + message);
+        System.out.println("Message received");
         whatsappService.sendMessage(message.getTo(), message.getMessage());
     }
 }

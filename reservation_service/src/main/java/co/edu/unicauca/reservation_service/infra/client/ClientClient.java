@@ -1,6 +1,6 @@
 package co.edu.unicauca.reservation_service.infra.client;
 
-import co.edu.unicauca.reservation_service.infra.dto.client.response.ClientResponseDTO;
+import co.edu.unicauca.reservation_service.infra.dto.client.ClientResponseDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
