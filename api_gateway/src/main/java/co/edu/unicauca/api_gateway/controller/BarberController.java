@@ -53,7 +53,7 @@ public class BarberController {
 
     // Schedule endpoints
     @GetMapping("/schedule/{barberId}")
-    @PreAuthorize("hasRole('BARBER')")
+    @PreAuthorize("hasRole('BARBER') or hasRole('CLIENT')")
     public ResponseEntity<?> getScheduleByBarberId(@PathVariable Long barberId) {
         return barberClient.getScheduleByBarberId(barberId);
     }

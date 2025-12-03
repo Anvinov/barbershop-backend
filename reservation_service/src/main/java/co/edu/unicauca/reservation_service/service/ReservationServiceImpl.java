@@ -11,9 +11,11 @@ import co.edu.unicauca.reservation_service.infra.dto.barber.response.BarberRespo
 import co.edu.unicauca.reservation_service.infra.dto.client.response.ClientResponseDTO;
 import co.edu.unicauca.reservation_service.infra.dto.reservation.request.ReservationRequestDTO;
 import co.edu.unicauca.reservation_service.infra.dto.reservation.response.ReservationResponseDTO;
+import co.edu.unicauca.reservation_service.infra.dto.service.ServiceResponseDTO;
 import co.edu.unicauca.reservation_service.infra.mapper.ReservationMapper;
 import co.edu.unicauca.reservation_service.repository.ReservationRepository;
 import feign.RetryableException;
+import org.springframework.jmx.export.notification.NotificationPublisher;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -28,11 +30,14 @@ public class ReservationServiceImpl implements ReservationService{
     private final BarberClient barberClient;
     private final ServiceClient serviceClient;
 
-    public ReservationServiceImpl(ReservationRepository reservationRepository, ClientClient clientClient, BarberClient barberClient, ServiceClient serviceClient) {
+    private final NotificationPublisher notificationPublisher;
+
+    public ReservationServiceImpl(ReservationRepository reservationRepository, ClientClient clientClient, BarberClient barberClient, ServiceClient serviceClient, NotificationPublisher notificationPublisher) {
         this.reservationRepository = reservationRepository;
         this.clientClient = clientClient;
         this.barberClient = barberClient;
         this.serviceClient = serviceClient;
+        this.notificationPublisher = notificationPublisher;
     }
 
     @Override
@@ -74,9 +79,19 @@ public class ReservationServiceImpl implements ReservationService{
         // Validations for services
         try{
             List<Long> servicesDisabled = serviceClient.servicesAreDisabled(request.getServices()).getBody();
-            assert servicesDisabled != null;
 
+            assert servicesDisabled != null;
             if (!servicesDisabled.isEmpty()) throw new ServiceDisabledException(servicesDisabled.toString());
+
+            List<ServiceResponseDTO> services = serviceClient.getServices(null).getBody();
+
+            assert services != null;
+
+            for(ServiceResponseDTO service : services){
+                if (request.getServices().contains(service.getId())) {
+
+                }
+            }
 
         } catch (RetryableException  e) {
             throw new ServiceNotAvailableException("services");
@@ -113,6 +128,8 @@ public class ReservationServiceImpl implements ReservationService{
         }
 
         reservation.setState(new PendingState());
+
+        NotificationPublisher
 
         reservationRepository.save(reservation);
 
